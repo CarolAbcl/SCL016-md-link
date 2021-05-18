@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": " "
+    "pretest": "npm run htmlhint && npm run eslint && npm run stylelint",
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,9 @@
     "url": "https://github.com/CarolAbcl/SCL016-md-link/issues"
   },
   "homepage": "https://github.com/CarolAbcl/SCL016-md-link#readme",
-  "dependencies": {}
+  "dependencies": {
+    "eslint": "^7.26.0",
+    "jest": "^26.6.3",
+    "marked": "^2.0.3"
+  }
 }
