@@ -22,6 +22,7 @@ module.exports = (route) => {
         renderer: render
       })
       console.log(arrayLinks);
+      //console.log(marked(data));
     }
   });
 } 
