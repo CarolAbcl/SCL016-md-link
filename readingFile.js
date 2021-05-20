@@ -1,9 +1,7 @@
-const { link } = require('fs');
-
 fs = require('fs');
 marked = require('marked');
 module.exports = (route) => {
-  myFile = route;
+  let myFile = route;
   fs.readFile(myFile, 'utf8', (err, data) => {
     if (err) {
       console.log('error: ', err);
