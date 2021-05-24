@@ -6,9 +6,9 @@ module.exports = (route) => {
     if (err) {
       console.log('error: ', err);
     } else {
-      const arrayLinks= []
+      const arrayLinks = [];
       let render = new marked.Renderer();
-      render.link = function (href, title, text) {
+      render.link = function(href, title, text) {
         const linkElements = {
           href,
           text,
@@ -16,11 +16,11 @@ module.exports = (route) => {
         };
         arrayLinks.push(linkElements);
       };
-      marked(data,{
-        renderer: render
-      })
+      marked(data, {
+        renderer: render,
+      });
       console.log(arrayLinks);
-      //console.log(marked(data));
+      // console.log(marked(data));
     }
   });
-} 
+};

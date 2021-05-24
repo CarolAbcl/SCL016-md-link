@@ -1,14 +1,48 @@
 'use strict';
-const catchDir = require("./catchDir");
+const { stat } = require('fs');
+const { mdFile, fileWalker, readingFile } = require('./catchFiles');
+
 const route = process.argv[2];
-//module.exports = () => {
+const optionOne = process.argv[3];
+const optionTwo = process.argv[4];
 
-//};
-if ((route != '') && (route != undefined)) {
-  console.log('ruta valida');
-  catchDir (route);
-} else{
-console.log('you must enter a valid path')
-}
 
- 
+const mdLinks = (route, options) =>{
+  return new Promise((resolve, reject) =>{
+    inWhitFileOrDir(route)
+      .then((result) =>{
+        resolve(console.log(result));
+      });
+  });
+};
+
+// Check if path is file or directory
+const inWhitFileOrDir = (route) => {
+  return new Promise((resolve, reject) => {
+    let isDirectory;
+    stat(route, (error, stats) => {
+      if (error) {
+        reject(console.log('la ruta especificada no es correcta'));
+      } else {
+        isDirectory = stats.isDirectory();
+        if (isDirectory === false) {
+          // resolve(console.log('es un archivo'));
+          resolve(mdFile(route));
+          // .then((objLinks) =>{
+          // resolve(objLinks);
+          // });
+        } else {
+          // resolve(console.log('es un directorio'));
+          resolve(fileWalker(route));
+          // .then((res) =>{
+          // resolve(res);
+          // });
+        }
+      }
+    });
+  });
+};
+
+mdLinks(route)
+  .then(() =>{
+  });
