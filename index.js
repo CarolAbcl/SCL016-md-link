@@ -1,6 +1,6 @@
 'use strict';
 const { stat } = require('fs');
-const { mdFile, fileWalker, readingFile } = require('./catchFiles');
+const { mdFile, searchInDirectory, readingFile, scanDir } = require('./catchFiles');
 
 const route = process.argv[2];
 const optionOne = process.argv[3];
@@ -12,7 +12,7 @@ const mdLinks = (route, options) =>{
     inWhitFileOrDir(route)
       .then((result) =>{
         resolve(console.log(result));
-      });
+      }); 
   });
 };
 
@@ -32,11 +32,10 @@ const inWhitFileOrDir = (route) => {
           // resolve(objLinks);
           // });
         } else {
-          // resolve(console.log('es un directorio'));
-          resolve(fileWalker(route));
-          // .then((res) =>{
-          // resolve(res);
-          // });
+          scanDir(route)
+            .then((res) =>{
+              resolve(res);
+            });
         }
       }
     });
