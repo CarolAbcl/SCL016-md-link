@@ -1,5 +1,5 @@
-const { resolve } = require('path');
 const fileHound = require('fileHound');
+const fetch = require('node-fetch');
 
 fs = require('fs');
 path = require('path');
@@ -16,10 +16,10 @@ const mdFile = (route) => {
       readingFile(route)
         .then((arrayLinks) =>{
           resolve(arrayLinks);
-          console.log('es md');
+          // console.log('es md');
         });
     } else {
-      reject(console.log('no es md'));      
+      console.log('no es un archivo md');      
     }
   });
 };
@@ -31,10 +31,10 @@ const scanDir = (route) =>{
       .discard('node_modules')
       .paths(route)
       .ext('.md')
-      .find();
-    resolve(files);
-
-    // res => (res.forEach(file => {      })
+      .find()
+      .then(files =>(files.forEach(el => {
+        resolve(readingFile(el));
+      })));
   });
 };
 
@@ -42,11 +42,11 @@ const scanDir = (route) =>{
 const readingFile = (route) =>{
   return new Promise((resolve, reject) =>{
     let myFile = route;
+    myFile = path.resolve(myFile);
     fs.readFile(myFile, 'utf8', (err, data) => {
       if (err) {
         console.log('error: ', err);
       } else {
-        // const arrayLinks = [];
         let render = new marked.Renderer();
         render.link = function(href, title, text) {
           const linkElements = {
@@ -65,6 +65,13 @@ const readingFile = (route) =>{
     });
   });
 };
+
+/* const linkStatus = link =>{
+  fetch(link)
+  .then(res = res.text())
+  .then()
+
+} */
 
 module.exports = {
   mdFile,

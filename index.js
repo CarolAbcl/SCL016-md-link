@@ -1,4 +1,5 @@
 'use strict';
+const { rejects } = require('assert');
 const { stat } = require('fs');
 const { mdFile, searchInDirectory, readingFile, scanDir } = require('./catchFiles');
 
@@ -10,9 +11,9 @@ const optionTwo = process.argv[4];
 const mdLinks = (route, options) =>{
   return new Promise((resolve, reject) =>{
     inWhitFileOrDir(route)
-      .then((result) =>{
-        resolve(console.log(result));
-      }); 
+      .then((links) =>{
+        resolve(links);
+      });
   });
 };
 
@@ -26,11 +27,7 @@ const inWhitFileOrDir = (route) => {
       } else {
         isDirectory = stats.isDirectory();
         if (isDirectory === false) {
-          // resolve(console.log('es un archivo'));
           resolve(mdFile(route));
-          // .then((objLinks) =>{
-          // resolve(objLinks);
-          // });
         } else {
           scanDir(route)
             .then((res) =>{
@@ -43,5 +40,9 @@ const inWhitFileOrDir = (route) => {
 };
 
 mdLinks(route)
-  .then(() =>{
+  .then((result) =>{
+    result.forEach(element => {
+      console.log('FILE: ' + element.file);
+      console.table([element], ['href', 'text']);
+    });
   });
