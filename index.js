@@ -1,11 +1,12 @@
 'use strict';
 const { rejects } = require('assert');
 const { stat } = require('fs');
-const { mdFile, searchInDirectory, readingFile, scanDir } = require('./catchFiles');
+const { mdFile, scanDir, linkStatus } = require('./catchFiles');
 
 const route = process.argv[2];
 const optionOne = process.argv[3];
 const optionTwo = process.argv[4];
+const options = '';
 
 
 const mdLinks = (route, options) =>{
@@ -39,10 +40,22 @@ const inWhitFileOrDir = (route) => {
   });
 };
 
-mdLinks(route)
+mdLinks(route, options)
   .then((result) =>{
-    result.forEach(element => {
-      console.log('FILE: ' + element.file);
-      console.table([element], ['href', 'text']);
-    });
+    if (!optionOne) {
+      result.forEach(element => {
+        console.log('FILE: ' + element.file);
+        console.table([element], ['href', 'text']);
+      });
+    } else if (optionOne === 'validate') {
+      result.forEach(element =>{
+        linkStatus(element.href)
+          .then((response) =>{
+            element.status = response.status;
+            element.result = response.result;
+            console.log('FILE: ' + element.file);
+            console.table([element], ['href', 'text', 'status', 'result']);
+          });
+      });
+    }
   });

@@ -66,15 +66,28 @@ const readingFile = (route) =>{
   });
 };
 
-/* const linkStatus = link =>{
-  fetch(link)
-  .then(res = res.text())
-  .then()
-
-} */
+const linkStatus = link => {
+  return new Promise((resolve, reject) => {
+    arrayLinksStatus = {};
+    fetch(link)
+      .then((response) => {
+        if (response.ok) {
+          arrayLinksStatus.status = response.status;
+          arrayLinksStatus.result = response.statusText;
+          resolve(arrayLinksStatus);
+        }
+      })
+      .catch((err) => {
+        arrayLinksStatus.status = 'ERROR';
+        arrayLinksStatus.result = 'FAIL';
+        resolve(arrayLinksStatus);
+      });
+  });
+};
 
 module.exports = {
   mdFile,
   scanDir,
-  readingFile
+  readingFile,
+  linkStatus
 };
