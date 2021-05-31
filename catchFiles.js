@@ -60,12 +60,12 @@ const readingFile = (route) =>{
           renderer: render,
         });
         resolve(arrayLinks);
-        // console.log(marked(data));
       }
     });
   });
 };
 
+// check links ant return status
 const linkStatus = link => {
   return new Promise((resolve, reject) => {
     arrayLinksStatus = {};
@@ -89,5 +89,5 @@ module.exports = {
   mdFile,
   scanDir,
   readingFile,
-  linkStatus
+  linkStatus,
 };
