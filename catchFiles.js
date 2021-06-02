@@ -1,5 +1,6 @@
 const fileHound = require('fileHound');
 const fetch = require('node-fetch');
+const { resolve } = require('path');
 
 fs = require('fs');
 path = require('path');
@@ -38,7 +39,7 @@ const scanDir = (route) =>{
   });
 };
 
-
+// read md files and return array with links
 const readingFile = (route) =>{
   return new Promise((resolve, reject) =>{
     let myFile = route;
@@ -68,7 +69,7 @@ const readingFile = (route) =>{
 // check links ant return status
 const linkStatus = link => {
   return new Promise((resolve, reject) => {
-    arrayLinksStatus = {};
+    let arrayLinksStatus = {};
     fetch(link)
       .then((response) => {
         if (response.ok) {
@@ -84,6 +85,22 @@ const linkStatus = link => {
       });
   });
 };
+
+// let brokenLinks = 0;
+// const brokenFunction = links =>{
+//   return new Promise((resolve, reject) => {
+//     links.forEach(element =>{
+//       linkStatus(element.href)
+//         .then((response) =>{
+//           if (response.result === 'FAIL') {
+//             brokenLinks ++;
+//             let broken = brokenLinks.toString();
+//             resolve(broken);
+//           }
+//         });
+//     });
+//   });
+// };
 
 module.exports = {
   mdFile,

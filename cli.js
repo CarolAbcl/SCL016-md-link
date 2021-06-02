@@ -30,7 +30,8 @@ if ((optionOne === '--validate' && optionTwo === '--stats') || (optionOne === '-
   options.validate = false;
   options.stats = false;
 } else {
-  console.log('ingrese una opcion valida');
+  console.log('Please enter a valid option');
+  process.exit();
 }
 
 console.log(options);
@@ -38,38 +39,46 @@ console.log(options);
 
 let uniqueLinks = 0;
 let totalLinks = 0;
+let brokenLinks = 0;
+
 
 mdLinks(route, options)
   .then((result) =>{
-    console.log(result);
-    if (options.validate === false && options.stats === false) {
+    if (!options.validate && !options.stats) {
       result.forEach(element => {
         console.log('FILE: ' + element.file);
         console.table([element], ['href', 'text']);
       });
-    } else if (options.validate === true && !options.stats) {
+    } else if (options.validate && !options.stats) {
       result.forEach(element =>{
         linkStatus(element.href)
           .then((response) =>{
-            console.log(response);
             element.status = response.status;
             element.result = response.result;
             console.log('FILE: ' + element.file);
             console.table([element], ['href', 'text', 'status', 'result']);
           });
       });
-    } else if (options.stats === true && options.validate === false) {
+    } else if (options.stats && !options.validate) {
       totalLinks = result.map(result => result.href);
       uniqueLinks = [...new Set(totalLinks)].length;
       console.log('Total Links: ' + totalLinks.length);
       console.log('Unique Links: ' + uniqueLinks);
-    } else if (options.validate === true && options.stats === true) {
-      let brokenLinks;
-      result.forEach(element =>{
-        linkStatus(element.href)
-          .then((response) =>{
-            console.log(response.result);
-          });
+    } else if (options.validate && options.stats) {
+      const brokenArray = result.map((el)=> {
+        return linkStatus(el.href);
+      });
+      Promise.all(brokenArray).then((resolvedPromiseArray)=> {
+        resolvedPromiseArray.forEach((el) => {
+          if (el.result === 'FAIL') {
+            brokenLinks ++;
+          }
+        });
+        totalLinks = result.map(result => result.href);
+        uniqueLinks = [...new Set(totalLinks)].length;
+        console.log('Total Links: ' + totalLinks.length);
+        console.log('Unique Links: ' + uniqueLinks);
+        console.log('Broken Links: ' + brokenLinks);
       });
     }
   });
