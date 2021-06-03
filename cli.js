@@ -12,7 +12,7 @@ const options = {
 };
 
 if (!route) {
-  console.log('por favor ingrese un archivo o una ruta');
+  console.log('Please enter a file or path');
   return;
 };
 
@@ -33,9 +33,6 @@ if ((optionOne === '--validate' && optionTwo === '--stats') || (optionOne === '-
   console.log('Please enter a valid option');
   process.exit();
 }
-
-console.log(options);
-
 
 let uniqueLinks = 0;
 let totalLinks = 0;

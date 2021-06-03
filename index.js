@@ -7,7 +7,8 @@ const mdLinks = (route, options) =>{
     inWhitFileOrDir(route)
       .then((links) =>{
         resolve(links);
-      });
+      })
+      .catch((err) => console.log('please check'));
   });
 };
 
@@ -17,7 +18,7 @@ const inWhitFileOrDir = (route) => {
     let isDirectory;
     stat(route, (error, stats) => {
       if (error) {
-        reject(console.log('la ruta especificada no es correcta'));
+        reject(console.log('The path is not correct'));
       } else {
         isDirectory = stats.isDirectory();
         if (isDirectory === false) {
@@ -33,4 +34,7 @@ const inWhitFileOrDir = (route) => {
   });
 };
 
-module.exports = { mdLinks };
+module.exports = { 
+  mdLinks,
+  inWhitFileOrDir
+};
