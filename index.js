@@ -2,15 +2,15 @@
 const { stat } = require('fs');
 const { mdFile, scanDir} = require('./catchFiles');
 
-const mdLinks = (route, options) =>{
-  return new Promise((resolve, reject) =>{
-    inWhitFileOrDir(route)
-      .then((links) =>{
-        resolve(links);
-      })
-      .catch((err) => console.log('please check'));
-  });
-};
+// const mdLinks = (route, options) =>{
+//   return new Promise((resolve, reject) =>{
+//     inWhitFileOrDir(route)
+//       .then((links) =>{
+//         resolve(links);
+//       })
+//       .catch((err) => console.log('please check'));
+//   });
+// };
 
 // Check if path is file or directory
 const inWhitFileOrDir = (route) => {
@@ -35,6 +35,5 @@ const inWhitFileOrDir = (route) => {
 };
 
 module.exports = { 
-  mdLinks,
   inWhitFileOrDir
 };
