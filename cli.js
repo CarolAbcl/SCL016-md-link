@@ -1,7 +1,5 @@
 #!/usr/bin/env node
-const {inWhitFileOrDir} = require('./index');
-const {linkStatus} = require('./catchFiles');
-
+const {inWhitFileOrDir, linkStatus} = require('./index');
 
 const route = process.argv[2];
 const optionOne = process.argv[3];
